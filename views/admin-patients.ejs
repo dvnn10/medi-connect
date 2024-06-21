@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Portal - Admin Dashboard</title>
+    <link rel="stylesheet" href="/admin-dash.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+</head>
+<style>
+    /* Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+    }
+    
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+<body>
+
+    <header>
+        <div id="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <i class="bi bi-phone"></i> List of Patients
+                </div>
+                <div class="topbar-right">
+                    <i class="bi bi-clock"></i> MediConnectSeva
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+   
+        <div class="container">
+            <div class="sidebar">
+                <nav>
+                    <ul>
+                        <li><a href="/admin/admin-dash">Dashboard</a></li>
+                        <li><a href="/admin/allAppointments" >Appointments</a></li>
+                        <li><a href="/admin/allDoctors" >Hospitals</a></li>
+                        <li><a href="#" class="active">Patients</a></li>
+                        <li><a href="/auth/login/" onclick="Logout()">Log Out</a></li>
+                    </ul>
+                </nav>
+                <img src="/images/1.png" alt="Photo Placeholder" class="photo-placeholder">
+            </div>
+        <div class="main-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="patient-table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        function Logout() {
+            localStorage.removeItem("data");
+            console.log(localStorage.getItem("data"));
+        }
+        // Fetch data from the API and populate the table
+        fetchPatients();
+        
+        function fetchPatients() {
+            fetch('http://localhost:5000/admin/getPatients')
+            .then(response => response.json())
+            .then(data => {
+                renderPatients(data);
+            })
+            .catch(error => console.error('Error fetching patients:', error));
+        }
+
+        function renderPatients(patients) {
+            const tableBody = document.getElementById('patient-table-body');
+            tableBody.innerHTML = ''; // Clear existing data
+            console.log(patients[0]);
+            patients.forEach(patient => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${patient.name}</td>
+                    <td>${patient.username}</td>
+                    <td>${patient.phone}</td>
+                    <td>${patient.email}</td>
+                    <td>${patient.age}</td>
+                    <td>${patient.gender}</td>
+                    <td><button class="delete-btn" data-id="${patient._id}">Delete</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+                  // Add event listener for delete buttons
+        const deleteBtns = document.querySelectorAll('.delete-btn');
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', handleDeletePatient);
+        });
+        }
+
+    function handleDeletePatient(event) {
+      const patientId = event.target.dataset.id;
+      fetch(`http://localhost:5000/admin/deletePatient/${patientId}`, {
+        method: 'DELETE'
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.message);
+          fetchPatients(); // Refresh the patient list after deletion
+        })
+        .catch(error => console.error('Error deleting patient:', error));
+    }
+    </script>
+
+</body>
+</html>

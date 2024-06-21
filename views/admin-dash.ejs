@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Healthcare Portal - Admin Dashboard</title>
+    <link rel="stylesheet" href="/admin-dash.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+
+    <!-- Cdn CSS Files 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.1/font/bootstrap-icons.min.css"
+        rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.5.4/swiper-bundle.min.css" rel="stylesheet">
+    -->
+    <!-- Vendor CSS Files 
+    <link href="/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    -->
+    <!-- Template Main CSS File -->
+    <link
+      href="/assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/assets/vendor/boxicons/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="/assets/css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <div id="topbar">
+        <div class="topbar-content">
+          <div class="topbar-left">
+            <i class="bi bi-phone"></i> Admin Dashboard
+          </div>
+          <div class="topbar-right">
+            <i class="bi bi-clock"></i> MediConnectSeva
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="sidebar">
+        <nav>
+          <ul>
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a href="/admin/allAppointments">Appointments</a></li>
+            <li><a href="/admin/allDoctors">Hospitals</a></li>
+            <li><a href="/admin/allPatients">Patients</a></li>
+            <li><a href="/auth/login/" onclick="Logout()">Log Out</a></li>
+          </ul>
+        </nav>
+        <img
+          src="/images/1.png"
+          alt="Photo Placeholder"
+          class="photo-placeholder"
+        />
+      </div>
+      <div class="main-content">
+        <div class="card-container">
+          <span class="card" padding="10rem">
+            <div class="card-body">
+              <img
+                src="/images/patient.png"
+                alt="Icon"
+                class="icon-image"
+                width="40rem"
+              />
+              <h5 class="card-title">
+                <span><%= totalPatients %></span>
+              </h5>
+              <p class="card-text">Total Patients</p>
+            </div>
+          </span>
+          <span class="card">
+            <div class="card-body">
+              <img
+                src="/images/medical-appointment.png"
+                alt="Icon"
+                class="icon-image"
+                width="40rem"
+              />
+              <h5 class="card-title">
+                <span><%= totalAppointments %></span>
+              </h5>
+              <p class="card-text">Total Appointments</p>
+            </div>
+          </span>
+          <span class="card">
+            <div class="card-body">
+              <img
+                src="/images/doctor.png"
+                alt="Icon"
+                class="icon-image"
+                width="40rem"
+              />
+              <h5 class="card-title">
+                <span><%= totalDoctors %></span>
+              </h5>
+              <p class="card-text">Total Doctors</p>
+            </div>
+          </span>
+        </div>
+        <div class="chart-container">
+          <div class="chart">
+            <canvas id="barChart"></canvas>
+          </div>
+          <div class="chart">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function Logout() {
+            localStorage.removeItem("data");
+            console.log(localStorage.getItem("data"));
+        }
+      // Fetch data from the API
+      fetch("http://localhost:5000/admin/metrics")
+        .then((response) => response.json())
+        .then((dataLabels) => {
+          const { appointmentsByHospital } = dataLabels;
+
+          // Extract labels and data from the appointmentsByHospital array
+          const labels = appointmentsByHospital.map((hospital) => hospital._id);
+          const info = appointmentsByHospital.map((hospital) => hospital.count);
+
+          // Prepare the data for the bar chart
+          const barChartData = {
+            labels,
+            datasets: [
+              {
+                label: "Number of Appointments",
+                data: info,
+                backgroundColor: "rgba(54, 162, 235, 0.2)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1,
+              },
+            ],
+          };
+
+          // Chart options
+          const barChartOptions = {
+            indexAxis: "y", // This line makes the bar chart horizontal
+            scales: {
+              xAxes: [
+                {
+                  ticks: {
+                    beginAtZero: true,
+                  },
+                },
+              ],
+            },
+          };
+
+          // Create the bar chart
+          const barChartCanvas = document
+            .getElementById("barChart")
+            .getContext("2d");
+          const barChart = new Chart(barChartCanvas, {
+            type: "bar",
+            data: barChartData,
+            options: barChartOptions,
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    </script>
+  </body>
+</html>

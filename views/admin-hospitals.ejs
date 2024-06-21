@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      .modal-content {
+        width: 400px;
+        height: 500px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .modal-content .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      .modal-content h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 30px;
+      }
+
+      .modal-content label {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .modal-content input[type="text"],
+      .modal-content select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+
+      .modal-content input[type="text"]:focus,
+      .modal-content select:focus {
+        outline: none;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-content select {
+        appearance: menulist;
+      }
+
+      .modal-content button[type="submit"] {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+
+      .modal-content button[type="submit"]:hover {
+        background-color: #45a049;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin-Hospital-Dash</title>
+    <link rel="stylesheet" href="/admin-dash.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+
+    <link
+      href="/assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/assets/vendor/boxicons/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="/assets/css/style.css" rel="stylesheet" />
+  </head>
+  <style>
+    /* Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 30%;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Table Styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+  <body>
+    <header>
+      <div id="topbar">
+        <div class="topbar-content">
+          <div class="topbar-left">
+            <i class="bi bi-phone"></i> List of Doctors
+          </div>
+          <div class="topbar-right">
+            <i class="bi bi-clock"></i> MediConnectSeva
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container1">
+      <div class="sidebar">
+        <nav>
+          <ul>
+            <li><a href="/admin/admin-dash">Dashboard</a></li>
+            <li><a href="/admin/allAppointments">Appointments</a></li>
+            <li><a href="#" class="active">Hospitals</a></li>
+            <li><a href="/admin/allPatients">Patients</a></li>
+            <li><a href="/auth/login/" onclick="Logout()">Log Out</a></li>
+          </ul>
+        </nav>
+        <img
+          src="/images/1.png"
+          alt="Photo Placeholder"
+          class="photo-placeholder"
+        />
+      </div>
+      <div class="col-10" id="homebutton" style="margin-left: 2rem">
+        <button
+          class="btn appointment-btn scrollto"
+          style="margin-top: 4rem; margin-left: 50vw"
+          id="addDoctorBtn"
+        >
+          Add doctor
+        </button>
+      </div>
+      <button id="addDoctorBtn">Add Doctor</button>
+      <!-- <button id="sortByHospital">Filter by Hospital</button>
+      <button id="sortBySpeciality">Filter by Speciality</button> -->
+
+      <div id="addDoctorModal" class="modal">
+        <div class="modal-content" style="margin: 8rem 483px; margin-bottom: 0">
+          <span class="close">&times;</span>
+          <h2>Add Doctor</h2>
+          <form id="addDoctorForm">
+            <label for="doctorName">Doctor Name:</label>
+            <input type="text" id="doctorName" name="name" required />
+
+            <label for="doctorSpeciality">Speciality:</label>
+            <input
+              type="text"
+              id="doctorSpeciality"
+              name="speciality"
+              required
+            />
+
+            <label for="doctorPhone">Phone:</label>
+            <input type="text" id="doctorPhone" name="phone" required />
+
+            <label for="doctorHospital">Hospital:</label>
+            <select id="doctorHospital" name="hospital" required></select>
+
+            <button type="submit" id="save">Save</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="main-content1">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <span>Doctor</span>
+              </th>
+              <th>
+                <span>Speciality</span>
+                <select
+                  id="filterBySpeciality"
+                  onchange="filterBySpeciality(this.value)"
+                >
+                  <option value="All">All</option>
+                  <option value="Heart">Heart</option>
+                  <option value="Lungs">Lungs</option>
+                  <option value="Kidney">Kidney</option>
+                </select>
+              </th>
+              <th>Phone</th>
+              <th>
+                <span>Hospital</span>
+                <select
+                  id="filterByHospital"
+                  onchange="filterByHospital(this.value)"
+                >
+                  <option value="All">All</option>
+                  <option value="Asian Heart Institute">
+                    Asian Heart Institute
+                  </option>
+                  <option value="Bhabha Hospital">Bhabha Hospital</option>
+                  <option value="Bhaktivedanta Hospital">
+                    Bhaktivedanta Hospital
+                  </option>
+                  <option value="Bombay Hospital">Bombay Hospital</option>
+                  <option value="Cloudnine Hospitals">
+                    Cloudnine Hospitals
+                  </option>
+                </select>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="doctor-table-body">
+            <!-- Doctors will be dynamically inserted here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      function Logout() {
+        localStorage.removeItem("data");
+        console.log(localStorage.getItem("data"));
+      }
+      fetchDoctors();
+
+      function fetchDoctors() {
+        fetch("/admin/getDoctors")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            renderDoctors(data);
+          })
+          .catch((error) => console.error("Error fetching doctors:", error));
+      }
+
+      function renderDoctors(doctors) {
+        const tableBody = document.getElementById("doctor-table-body");
+        tableBody.innerHTML = ""; // Clear existing data
+
+        doctors.forEach((doctor) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                        <td>${doctor.name}</td>
+                        <td>${doctor.speciality}</td>
+                        <td>${doctor.phone}</td>
+                        <td>${doctor.hospital}</td>
+                        <td><button class="delete-btn" data-id="${doctor._id}">Delete</button></td>
+                    `;
+          tableBody.appendChild(row);
+        });
+
+        const deleteBtns = document.querySelectorAll(".delete-btn");
+        deleteBtns.forEach((btn) => {
+          btn.addEventListener("click", handleDeleteDoctor);
+        });
+      }
+      // Get the modal elements
+      const modal = document.getElementById("addDoctorModal");
+      const btn = document.getElementById("addDoctorBtn");
+      const sort = document.getElementById("sortByHospital");
+      // const sort_speciality = document.getElementById("sortBySpeciality");
+      const save = document.getElementById("save");
+      const span = document.getElementsByClassName("close")[0];
+      const form = document.getElementById("addDoctorForm");
+
+      //Sort by Hospital
+      const filterByHospital = function (hospital) {
+        fetch(`/admin/filterByHospital?hospital=${hospital}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            renderDoctors(data);
+          })
+          .catch((error) => console.error("Error fetching doctors:", error));
+      };
+
+      //Sort by Speciality
+      const filterBySpeciality = function (speciality) {
+        fetch(`/admin/filterBySpeciality?speciality=${speciality}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            renderDoctors(data);
+          })
+          .catch((error) => console.error("Error fetching doctors:", error));
+      };
+
+      // Get the hospital dropdown and populate it
+      const hospitalDropdown = document.getElementById("doctorHospital");
+      fetchHospitals();
+
+      // Function to fetch hospitals and populate the dropdown
+      async function fetchHospitals() {
+        try {
+          const response = await fetch("/admin/getHospitals");
+          const hospitals = await response.json();
+          hospitals.forEach((hospital) => {
+            const option = document.createElement("option");
+            option.value = hospital.name;
+            option.textContent = hospital.name;
+            hospitalDropdown.appendChild(option);
+          });
+        } catch (error) {
+          console.error("Error fetching hospitals:", error);
+        }
+      }
+
+      // When the user clicks the button, open the modal
+      btn.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      // When the user clicks on the close button, close the modal
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      save.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      // Handle form submission
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const doctorName = document.getElementById("doctorName").value;
+        const doctorSpeciality =
+          document.getElementById("doctorSpeciality").value;
+        const doctorPhone = document.getElementById("doctorPhone").value;
+        const doctorHospital = document.getElementById("doctorHospital").value;
+
+        console.log(doctorName, doctorSpeciality, doctorPhone, doctorHospital);
+
+        try {
+          const response = await fetch("/admin/addDoctor", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: doctorName,
+              speciality: doctorSpeciality,
+              phone: doctorPhone,
+              hospital: doctorHospital,
+            }),
+          });
+
+          const data = await response.json();
+          console.log(data.message);
+          modal.style.display = "none";
+          form.reset();
+          // Optionally, you can refresh the doctor list here
+          fetchDoctors();
+        } catch (error) {
+          console.error("Error adding doctor:", error);
+        }
+      });
+
+      function handleDeleteDoctor(event) {
+        const doctorId = event.target.dataset.id;
+        fetch(`/admin/deleteDoctor/${doctorId}`, {
+          method: "DELETE",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.message);
+            fetchDoctors(); // Refresh the doctor list after deletion
+          })
+          .catch((error) => console.error("Error deleting doctor:", error));
+      }
+
+      // Fetch data from the API and populate the table
+    </script>
+  </body>
+</html>

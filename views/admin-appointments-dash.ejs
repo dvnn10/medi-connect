@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin-Apporintment-Dash</title>
+    <link rel="stylesheet" href="/admin-dash.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+
+    <link
+      href="/assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/assets/vendor/boxicons/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="/assets/css/style.css" rel="stylesheet" />
+  </head>
+  <style>
+    /* Table Styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+  <body>
+    <header>
+      <div id="topbar">
+        <div class="topbar-content">
+          <div class="topbar-left">
+            <i class="bi bi-phone"></i> User Appointments
+          </div>
+          <div class="topbar-right">
+            <i class="bi bi-clock"></i> MediConnectSeva
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="sidebar">
+        <nav>
+          <ul>
+            <li><a href="/admin/admin-dash">Dashboard</a></li>
+            <li><a href="#" class="active">Appointments</a></li>
+            <li><a href="/admin/allDoctors">Hospitals</a></li>
+            <li><a href="/admin/allPatients">Patients</a></li>
+            <li><a href="/auth/login/" onclick="Logout()">Log Out</a></li>
+          </ul>
+        </nav>
+        <img
+          src="/images/1.png"
+          alt="Photo Placeholder"
+          class="photo-placeholder"
+        />
+      </div>
+      <div class="main-content">
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Date</th>
+              <th>
+                <span>Hospital</span>
+                <select
+                  id="filterByHospital"
+                  onchange="filterByHospital(this.value)"
+                >
+                  <option value="All">All</option>
+                  <option value="Asian Heart Institute">
+                    Asian Heart Institute
+                  </option>
+                  <option value="Bhabha Hospital">Bhabha Hospital</option>
+                  <option value="Bhaktivedanta Hospital">
+                    Bhaktivedanta Hospital
+                  </option>
+                  <option value="Bombay Hospital">Bombay Hospital</option>
+                  <option value="Cloudnine Hospitals">
+                    Cloudnine Hospitals
+                  </option>
+                </select>
+              </th>
+              <th>Slot</th>
+            </tr>
+          </thead>
+          <tbody id="appointment-table-body">
+            <!-- Appointments will be dynamically inserted here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script>
+      function Logout() {
+        localStorage.removeItem("data");
+        console.log(localStorage.getItem("data"));
+      }
+      // Fetch data from the API and populate the table
+      fetchAppointments();
+
+      function fetchAppointments() {
+        fetch("/admin/getAppointments")
+          .then((response) => response.json())
+          .then((data) => {
+            renderAppointments(data);
+          })
+          .catch((error) =>
+            console.error("Error fetching appointments:", error)
+          );
+      }
+
+      function renderAppointments(appointments) {
+        const tableBody = document.getElementById("appointment-table-body");
+        tableBody.innerHTML = ""; // Clear existing data
+
+        appointments.forEach((appointment) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${appointment.username}</td>
+                    <td>${formatDate(appointment.date)}</td>
+                    <td>${appointment.hospital}</td>
+                    <td>${appointment.slot}</td>
+                `;
+          tableBody.appendChild(row);
+        });
+        function formatDate(dateString) {
+          const date = new Date(dateString);
+          const options = { day: "numeric", month: "long", year: "numeric" };
+          return date.toLocaleDateString("en-IN", options);
+        }
+      }
+
+      const filterByHospital = function (hospital) {
+        fetch(`/admin/filterByHospital-appointment?hospital=${hospital}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            renderAppointments(data);
+          })
+          .catch((error) => console.error("Error fetching doctors:", error));
+      };
+    </script>
+  </body>
+</html>

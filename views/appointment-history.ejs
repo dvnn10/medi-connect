@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Healthcare Portal - Admin Dashboard</title>
+    <link rel="stylesheet" href="/admin-dash.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+
+    <link
+      href="/assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/assets/vendor/boxicons/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="/assets/css/style.css" rel="stylesheet" />
+    <title>Appointments</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      tr:hover {
+        background-color: #f5f5f5;
+      }
+      .upper-half {
+        text-align: center;
+        height: 25rem;
+        background-color: #f8f9fa;
+      }
+      .lower-half {
+        text-align: center;
+        height: 25rem;
+        background-color: #f1f3f6;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div id="topbar">
+        <div class="topbar-content">
+          <div class="topbar-left">
+            <i class="bi bi-phone"></i> User Appointments
+          </div>
+          <div class="topbar-right">
+            <i class="bi bi-clock"></i> MediConnectSeva
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="container">
+      <div class="main-contentu">
+        <div class="upper-half">
+          <h2>Upcoming Appointments</h2>
+          <table id="upcoming-appointments">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Date</th>
+                <th>Hospital</th>
+                <th>Slot</th>
+              </tr>
+            </thead>
+            <tbody id="upcoming-appointment-table-body">
+              <!-- Upcoming appointments will be dynamically inserted here -->
+            </tbody>
+          </table>
+        </div>
+        <div class="lower-half">
+          <h2>Past Appointments</h2>
+          <table id="past-appointments">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Date</th>
+                <th>Hospital</th>
+                <th>Slot</th>
+              </tr>
+            </thead>
+            <tbody id="past-appointment-table-body">
+              <!-- Past appointments will be dynamically inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-10"
+      id="homebutton"
+      style="margin-left: 2rem; margin-top: 10rem"
+    >
+      <a href="/dash" class="btn appointment-btn scrollto" id="back">Back</a>
+    </div>
+  </body>
+  <script>
+    let data = JSON.parse(localStorage.getItem("data"));
+
+    // Fetch user details and set the username
+    fetchUserDetails(data);
+    let username;
+    function fetchUserDetails(data) {
+      const id = data._id;
+      fetch(`http://localhost:5000/user/getUserDetails/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((userData) => {
+          localStorage.setItem("userDetails", JSON.stringify(userData));
+          // Set the username fetched from the data
+          username = userData.username;
+          // Now that we have the username, fetch and render appointments
+          fetchAppointments();
+        })
+        .catch((error) => console.error("Error fetching details", error));
+    }
+    function fetchAppointments() {
+      // Fetch appointments using the stored username
+      fetch(`http://localhost:5000/admin/getAppointments?username=${username}`)
+        .then((response) => response.json())
+        .then((data) => {
+          // Once data is fetched, render appointments
+          renderAppointments(data);
+        })
+        .catch((error) => console.error("Error fetching appointments:", error));
+    }
+
+    // Function to render appointments into two tables (upcoming and past)
+    function renderAppointments(appointments) {
+      // Get references to the table bodies
+      const upcomingTableBody = document.getElementById(
+        "upcoming-appointment-table-body"
+      );
+      const pastTableBody = document.getElementById(
+        "past-appointment-table-body"
+      );
+      upcomingTableBody.innerHTML = ""; // Clear existing data
+      pastTableBody.innerHTML = ""; // Clear existing data
+
+      const today = new Date(); // Current date and time
+
+      // Loop through each appointment
+      appointments.forEach((appointment) => {
+        if (appointment.username == username) {
+          // Convert appointment date string to a Date object
+          const appointmentDate = new Date(appointment.date);
+
+          // Create a table row element
+          const row = document.createElement("tr");
+
+          // Populate the row with appointment details
+          row.innerHTML = `
+            <td>${appointment.username}</td>
+            <td>${formatDate(appointment.date)}</td>
+            <td>${appointment.hospital}</td>
+            <td>${appointment.slot}</td>
+            `;
+
+          // Check if appointment is upcoming or past
+          if (appointmentDate > today) {
+            upcomingTableBody.appendChild(row); // Add to upcoming appointments table
+          } else {
+            pastTableBody.appendChild(row); // Add to past appointments table
+          }
+        }
+      });
+    }
+
+    // Function to format date in a readable format
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { day: "numeric", month: "long", year: "numeric" };
+      return date.toLocaleDateString("en-IN", options);
+    }
+
+    // Set the username (you need to set this before calling fetchAppointments)
+    username = "example_username";
+
+    // Call fetchAppointments to fetch and render appointments for the logged-in user
+    fetchAppointments();
+  </script>
+</html>

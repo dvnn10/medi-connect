@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.image {
+  width: 40rem;
+  height: 54rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.user-details {
+  margin-left: 30rem;
+  margin-top: 20rem;
+  width: 50%;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.user-details th {
+  text-align: left;
+  padding: 0.5rem;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+}
+
+.user-details td {
+  text-align: left;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}

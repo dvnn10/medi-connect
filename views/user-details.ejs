@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Details Page</title>
+    <!-- Add your CSS links here -->
+    <link rel="stylesheet" href="/admin-dash.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
+    <link
+      href="/assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/assets/vendor/boxicons/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="/assets/css/style.css" rel="stylesheet" />
+  </head>
+
+  <style>
+    /* Table Styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      /* writing-mode: vertical-lr; */
+      /* text-orientation: upright; */
+      white-space: nowrap;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+  <body>
+    <header>
+      <div id="topbar">
+        <div class="topbar-content">
+          <div class="topbar-left">
+            <i class="bi bi-phone"></i> User Dashboard
+          </div>
+          <div class="topbar-right">
+            <i class="bi bi-clock"></i> MediConnectSeva
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-contentu">
+      <table>
+        <tbody id="user-table-body">
+          <tr>
+            <th>Username</th>
+            <td></td>
+            <td><button onclick="editField(1)">Edit</button></td>
+          </tr>
+          <tr>
+            <th>Name</th>
+            <td></td>
+            <td><button onclick="editField(2)">Edit</button></td>
+          </tr>
+          <tr>
+            <th>Age</th>
+            <td></td>
+            <td><button onclick="editField(3)">Edit</button></td>
+          </tr>
+          <tr>
+            <th>Gender</th>
+            <td></td>
+            <td><button onclick="editField(4)">Edit</button></td>
+          </tr>
+          <tr>
+            <th>Allergy</th>
+            <td></td>
+            <td><button onclick="editField(5)">Edit</button></td>
+          </tr>
+          <tr>
+            <th>Phone</th>
+            <td></td>
+            <td><button onclick="editField(6)">Edit</button></td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td></td>
+            <td><button onclick="editField(7)">Edit</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-10" id="homebutton" style="margin-left: 2rem">
+      <a href="/dash" class="btn appointment-btn scrollto" id="back">Back</a>
+    </div>
+
+    <script>
+      let data = JSON.parse(localStorage.getItem("data"));
+      fetchUserDetails(data);
+
+      function fetchUserDetails(data) {
+        const id = data._id;
+        fetch(`http://localhost:5000/user/getUserDetails/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            localStorage.setItem("userDetails", JSON.stringify(data));
+            renderUserDetails(data);
+          })
+          .catch((error) => console.error("Error fetching details", error));
+      }
+
+      function renderUserDetails(detail) {
+        const tableBody = document.getElementById("user-table-body");
+
+        // Populate table with user details
+        tableBody.querySelector("tr:nth-child(1) td").innerHTML =
+          detail.username ? detail.username : "N/A";
+        tableBody.querySelector("tr:nth-child(2) td").innerHTML = detail.name
+          ? detail.name
+          : "N/A";
+        tableBody.querySelector("tr:nth-child(3) td").innerHTML = detail.age
+          ? detail.age
+          : "N/A";
+        tableBody.querySelector("tr:nth-child(4) td").innerHTML = detail.gender
+          ? detail.gender
+          : "N/A";
+        tableBody.querySelector("tr:nth-child(5) td").innerHTML = detail.allergy
+          ? detail.allergy
+          : "N/A";
+        tableBody.querySelector("tr:nth-child(6) td").innerHTML = detail.phone
+          ? detail.phone
+          : "N/A";
+        tableBody.querySelector("tr:nth-child(7) td").innerHTML = detail.email
+          ? detail.email
+          : "N/A";
+      }
+
+      // Function to handle editing of fields
+      function editField(rowNumber) {
+        const tableBody = document.getElementById("user-table-body");
+        const fieldValue = tableBody
+          .querySelector(`tr:nth-child(${rowNumber}) td`)
+          .textContent.trim();
+        const newValue = prompt(
+          `Enter new value for ${
+            tableBody.querySelector(`tr:nth-child(${rowNumber}) th`).textContent
+          }:`,
+          fieldValue
+        );
+
+        if (newValue !== null) {
+          // Update the table
+          tableBody.querySelector(`tr:nth-child(${rowNumber}) td`).textContent =
+            newValue;
+
+          // Update the local storage
+          const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+          switch (rowNumber) {
+            case 1:
+              userDetails.username = newValue;
+              break;
+            case 2:
+              userDetails.name = newValue;
+              break;
+            case 3:
+              userDetails.age = newValue;
+              break;
+            case 4:
+              userDetails.gender = newValue;
+              break;
+            case 5:
+              userDetails.allergy = newValue;
+              break;
+            case 6:
+              userDetails.phone = newValue;
+              break;
+            case 7:
+              userDetails.email = newValue;
+              break;
+            default:
+              break;
+          }
+          localStorage.setItem("userDetails", JSON.stringify(userDetails));
+
+          // Send updated data to the backend (you need to implement this part)
+          sendUpdateToBackend(userDetails);
+        }
+      }
+
+      // Function to send updated data to the backend (you need to implement this part)
+      function sendUpdateToBackend(userDetails) {
+        const userId = userDetails.id;
+        fetch(`http://localhost:5000/user/editUserDetails/${userId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user: userDetails }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to update user details");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("User details updated:", data);
+            // Handle successful update
+          })
+          .catch((error) => {
+            console.error("Error updating user details:", error);
+            // Handle error
+          });
+      }
+    </script>
+  </body>
+</html>

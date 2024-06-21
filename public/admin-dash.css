@@ -1,0 +1,201 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  height: 90vh;
+}
+
+/* Topbar Styles */
+#topbar {
+  background-color: #333;
+  color: #fff;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  width:100vw;
+}
+
+.topbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.topbar-left,
+.topbar-right {
+  display: flex;
+  align-items: right;
+}
+
+.topbar-left i,
+.topbar-right i {
+  margin-right: 0.5rem;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  margin-top: 3rem;
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+  width: 15vw; /* 15% of the viewport width */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  height:41rem;
+}
+
+.sidebar nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar nav a {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem;
+}
+
+.sidebar nav a.active {
+  background-color: #555;
+}
+
+.photo-placeholder {
+  max-width: 100%;
+  margin-top: 1rem;
+  align-self: flex-end;
+}
+
+/* Main Content Styles */
+.main-content {
+  margin-top: 3rem;
+  margin-left: 17vw;
+  flex-grow: 1;
+  padding: 1rem;
+}
+
+.card-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.card {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.5rem;
+  width: 48%;
+  margin-right: 1rem;
+}
+
+.card:last-child {
+  margin-right: 0;
+}
+
+.card-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon-image {
+  max-width: 100%;
+}
+
+.graph-image {
+  width: 20%;
+  top: 2px;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chart {
+  width: 48%;
+}
+
+.main-content1{
+margin-left: 17vw;
+}
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 0.5rem;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sidebar nav {
+    display: flex;
+  }
+
+  .sidebar nav ul {
+    display: flex;
+  }
+
+  .sidebar nav a {
+    padding: 0.5rem 1rem;
+  }
+
+  .photo-placeholder {
+    margin-top: 0;
+    margin-left: 1rem;
+  }
+
+  .main-content {
+    padding: 0.5rem;
+  }
+
+  .card-container {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .chart-container {
+    flex-direction: column;
+  }
+
+  .chart {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  /* Topbar Responsive Styles */
+  #topbar {
+    padding: 0.3rem;
+  }
+
+  .topbar-content {
+    flex-direction: column;
+  }
+
+  .topbar-left,
+  .topbar-right {
+    margin-bottom: 0.3rem;
+  }
+}

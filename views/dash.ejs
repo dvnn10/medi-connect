@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>MediConnectSeva</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Cdn CSS Files -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.1/font/bootstrap-icons.min.css"
+        rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.5.4/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<script lang="javascript">
+function myFunction() {
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+
+<body>
+
+    <!-- ======= Top Bar ======= -->
+    <div id="topbar" class="d-flex align-items-center fixed-top">
+        <div class="container d-flex align-items-center justify-content-center justify-content-md-between">
+            <div class="align-items-center d-none d-md-flex">
+                <i class="bi bi-clock"></i> Monday - Saturday
+            </div>
+            <div class="d-flex align-items-center">
+                <i class="bi bi-phone"></i> Helpline Number : +91-11-23978046 | Toll Free Number: 1075
+                &nbsp
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+
+            <p style="margin-right: 17rem; font-size: 2.25rem; margin-top: 0.75rem;"><b>MediConnectSeva</b>
+            </p>
+
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+                    <li><a class="nav-link scrollto " href="#hero">Home</a></li>
+                    <li><a class="nav-link scrollto" href="#hospital">Hospitals</a></li>
+                    <li><a class="nav-link scrollto" href="#helpline">Helpline</a></li>
+                    <li><a class="nav-link scrollto" href="#faq">Faq</a></li>
+                    <!--<li><a class="nav-link scrollto" href="/login">Admin Login</a></li>-->
+                    <a href="/appointment"><button id="bookAppointment" type="button" class="btn btn-dark">Book Appointment Now</button></a>
+                    <div class="topnav" id = user_dd>
+                        <a href="#home" class="active" style="color: #333;">AB</a>
+                        <!-- Navigation links (hidden by default) -->
+                        <div id="myLinks">
+                          <a href="/auth/user-details/">User Profile</a>
+                          <a href="/auth/appointment-history/ ">Appointment History</a>
+                          <a href="/auth/login/" onclick="Logout()">Log Out</a>
+                        </div>
+                        <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+                        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                          <i class="fa fa-bars"></i>
+                        </a>
+                      </div>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+        </div>
+    </header><!-- End Header -->
+
+    <!-- ======= Hero Section ======= -->
+    <section id="hero">
+        <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
+
+            <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+
+            <div class="carousel-inner" role="listbox">
+
+                <!-- Slide 1 -->
+                <div class="carousel-item active" style="background-image: url(/assets/img/slide/S-1.jpg)">
+                    <div class="container">
+                        <% if (userData!==undefined && userData !==null) { %>
+
+                            <script>
+                                let data = JSON.parse('<%- userData %>')
+                                localStorage.setItem("data", JSON.stringify(data))
+                            </script>
+
+                            <% } else { %>
+
+
+                                <script>
+                                    let d = localStorage.getItem("data");
+                                    if (d === null || d === undefined) {
+                                        console.log("No data found, sent back to login")
+                                        window.location.href = "/auth/login";
+                                    }
+                                </script>
+
+                                <% } %>
+
+                                    <script>
+                                        let mydata = JSON.parse(localStorage.getItem("data"));
+                                        document.write(`<h2>Welcome, <span>${mydata.username} to MediConnectSeva</span></h2>`);
+                                    </script>
+                                    <!-- <h2>Welcome to <span>MediConnectSeva</span></h2> -->
+                                    <p>MediConnectSeva is a user-friendly healthcare portal where you can
+                                        effortlessly
+                                        schedule
+                                        hospital
+                                        appointments online </p>
+                                    <a href="/appointment" class="btn-get-started scrollto">Book Appointment
+                                        Now</a>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-item" style="background-image: url(/assets/img/slide/S-2.jpg)">
+                    <div class="container">
+                        <h2>Welcome to <span>MediConnectSeva</span></h2>
+                        <p>MediConnectSeva is a user-friendly healthcare portal where you can effortlessly
+                            schedule
+                            hospital
+                            appointments online </p>
+                        <a href="/appointment" class="btn-get-started scrollto">Book Appointment Now</a>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="carousel-item" style="background-image: url(/assets/img/slide/S-3.jpg)">
+                    <div class="container">
+                        <h2>Welcome to <span>MediConnectSeva</span></h2>
+                        <p>MediConnectSeva is a user-friendly healthcare portal where you can effortlessly
+                            schedule
+                            hospital
+                            appointments online </p>
+                        <a href="/appointment" class="btn-get-started scrollto">Book Appointment Now</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+            </a>
+
+            <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+            </a>
+
+        </div>
+    </section><!-- End Hero -->
+
+    <main id="main">
+
+        <!-- ======= Appointment ======= -->
+        <section class="featured-services">
+            <div class="container" data-aos="fade-up">
+
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                        <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
+                            <div class="icon"><i class="fas fa-notes-medical"></i></div>
+                            <h4 class="title"><a href="/appointment">Appointment Booking </a></h4>
+                            <p class="description"><a>First step is to book for an Appointment</a></p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                        <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
+                            <div class="icon"><i class="fas fa-viruses"></i></div>
+                            <h4 class="title"><a href="">About Booking</a></h4>
+                            <p class="description">For more information about booking you can check FAQs</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                        <div class="icon-box" data-aos="fade-up" data-aos-delay="300">
+                            <div class="icon"><i class="fas fa-user-friends"></i></div>
+                            <h4 class="title"><a href="">What you need before going to appointment?</a></h4>
+                            <p class="description">You need to make sure that you take your previous medical
+                                report(latest) with you
+                                and if you are allergetic to anything</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+                        <div class="icon-box" data-aos="fade-up" data-aos-delay="400">
+                            <div class="icon"><i class="fas fa-user-nurse"></i></div>
+                            <h4 class="title"><a href="">What you need to do after the appointment?</a></h4>
+                            <p class="description">You need to follow the advise and proper medicose given
+                                by the doctor
+                                during the
+                                appointment</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section><!-- End Appointment Section -->
+        <!-- ======= Hopital Section ======= -->
+        <section id="hospital" class="about">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>Hospital</h2>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6" data-aos="fade-right">
+                        <img src="/assets/img/about.jpg" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-lg-6 pt-4 pt-lg-0 content hospital text-center" data-aos="fade-left">
+                        <h1>Find Hospitals in your City or Nearby your City</h1><br>
+                        <a href="/hospital" class="btn appointment-btn scrollto">See List</a>
+                    </div>
+                </div>
+
+            </div>
+        </section><!-- End About Us Section -->
+
+        <!-- ======= Counts Section ======= -->
+        <section id="helpline" class="counts">
+            <div class="section-title">
+                <h2>Helpline Details</h2>
+            </div>
+            <div class="container" data-aos="fade-up">
+
+                <div class="row no-gutters">
+
+                    <div class="col-lg-4 col-md-6 d-md-flex align-items-md-stretch">
+                        <div class="count-box text-center">
+                            <i class="fas fa-phone-square-alt"></i>
+                            <h3>Helpline Number</strong></h3>
+                            <a href="#">+91-11-23978046</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 d-md-flex align-items-md-stretch">
+                        <div class="count-box text-center">
+                            <i class="fas fa-envelope"></i>
+                            <h3>Helpline Email</strong></h3>
+                            <a href="#">info@hospitalmanagementsystem.org</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 d-md-flex align-items-md-stretch">
+                        <div class="count-box text-center">
+                            <i class="fas fa-comment-alt"></i>
+                            <h3>Toll Free Number</strong></h3>
+                            <a href="#">1075</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section><!-- End Helpline Section -->
+
+
+
+
+        <!-- ======= Gallery Section ======= -->
+        <section id="gallery" class="gallery">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>Gallery
+
+                    </h2>
+                </div>
+
+                <div class="gallery-slider swiper-container">
+                    <div class="swiper-wrapper align-items-center">
+                        <div class="swiper-slide"><a class="gallery-lightbox"
+                                href="/assets/img/gallery/gallery-1.jpg"><img src="/assets/img/gallery/gallery-1.jpg"
+                                    class="img-fluid" alt=""></a>
+                        </div>
+                        <div class="swiper-slide"><a class="gallery-lightbox"
+                                href="/assets/img/gallery/gallery-2.jpg"><img src="/assets/img/gallery/gallery-2.jpg"
+                                    class="img-fluid" alt=""></a>
+                        </div>
+                        <div class="swiper-slide"><a class="gallery-lightbox"
+                                href="/assets/img/gallery/gallery-3.jpg"><img src="/assets/img/gallery/gallery-3.jpg"
+                                    class="img-fluid" alt=""></a>
+                        </div>
+                        <div class="swiper-slide"><a class="gallery-lightbox"
+                                href="/assets/img/gallery/gallery-4.jpg"><img src="/assets/img/gallery/gallery-4.jpg"
+                                    class="img-fluid" alt=""></a>
+                        </div>
+                        <div class="swiper-slide"><a class="gallery-lightbox"
+                                href="/assets/img/gallery/gallery-5.jpg"><img src="/assets/img/gallery/gallery-5.jpg"
+                                    class="img-fluid" alt=""></a>
+                        </div>
+                        <div class="swiper-slide"><a class="gallery-lightbox"
+                                href="/assets/img/gallery/gallery-6.jpg"><img src="/assets/img/gallery/gallery-6.jpg"
+                                    class="img-fluid" alt=""></a>
+                        </div>
+                        <div class="swiper-slide"><a class="gallery-lightbox"
+                                href="/assets/img/gallery/gallery-7.jpg"><img src="/assets/img/gallery/gallery-7.jpg"
+                                    class="img-fluid" alt=""></a>
+                        </div>
+                        <div class="swiper-slide"><a class="gallery-lightbox"
+                                href="/assets/img/gallery/gallery-8.jpg"><img src="/assets/img/gallery/gallery-8.jpg"
+                                    class="img-fluid" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+
+            </div>
+        </section><!-- End Gallery Section -->
+
+        <!-- ======= Frequently Asked Questioins Section ======= -->
+        <section id="faq" class="faq section-bg">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>Frequently Asked Questions</h2>
+                </div>
+
+                <ul class="faq-list">
+
+                    <li>
+                        <div data-bs-toggle="collapse" class="collapsed question" href="#faq1">How do I book
+                            an
+                            appointment online?
+                            <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i>
+                        </div>
+                        <div id="faq1" class="collapse" data-bs-parent=".faq-list">
+                            <p>
+                                You can book an appointment by visiting our website, selecting your
+                                preferred hospital,
+                                doctor, and
+                                appointment time, and then following the prompts to confirm your booking.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div data-bs-toggle="collapse" href="#faq2" class="collapsed question">Can I book
+                            appointments
+                            for multiple
+                            family members through the same account? <i class="bi bi-chevron-down icon-show"></i><i
+                                class="bi bi-chevron-up icon-close"></i></div>
+                        <div id="faq2" class="collapse" data-bs-parent=".faq-list">
+                            <p>
+                                Yes, many booking systems allow you to manage appointments for multiple
+                                family members
+                                through a single
+                                account. You can add family members' details and schedule appointments on
+                                their behalf.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div data-bs-toggle="collapse" href="#faq3" class="collapsed question">How far in
+                            advance can I
+                            book
+                            appointments online? <i class="bi bi-chevron-down icon-show"></i><i
+                                class="bi bi-chevron-up icon-close"></i></div>
+                        <div id="faq3" class="collapse" data-bs-parent=".faq-list">
+                            <p>
+                                The booking window may vary depending on the hospital or clinic's policy.
+                                Typically, you
+                                can book
+                                appointments online anywhere from a few days to several weeks in advance.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div data-bs-toggle="collapse" href="#faq4" class="collapsed question">Is my
+                            personal
+                            information secure
+                            when booking appointments online?<i class="bi bi-chevron-down icon-show"></i><i
+                                class="bi bi-chevron-up icon-close"></i></div>
+                        <div id="faq4" class="collapse" data-bs-parent=".faq-list">
+                            <p>
+                                Yes, we take the security and privacy of your personal information
+                                seriously. Our
+                                website employs
+                                industry-standard encryption and security measures to protect your data.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div data-bs-toggle="collapse" href="#faq5" class="collapsed question">What should I
+                            do if I
+                            have a medical
+                            emergency?<i class="bi bi-chevron-down icon-show"></i><i
+                                class="bi bi-chevron-up icon-close"></i></div>
+                        <div id="faq5" class="collapse" data-bs-parent=".faq-list">
+                            <p>
+                                In case of a medical emergency, please call emergency services or visit the
+                                nearest
+                                emergency room
+                                immediately. Our website is for non-emergency appointments only.
+                            </p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div data-bs-toggle="collapse" href="#faq6" class="collapsed question">Is there a
+                            fee for using
+                            the online
+                            appointment booking service? <i class="bi bi-chevron-down icon-show"></i><i
+                                class="bi bi-chevron-up icon-close"></i></div>
+                        <div id="faq6" class="collapse" data-bs-parent=".faq-list">
+                            <p>
+                                Our online appointment booking service is typically free for patients to
+                                use. However,
+                                there may be fees
+                                associated with medical services provided during your appointment, depending
+                                on your
+                                insurance coverage
+                                and the hospital's billing policies.
+                            </p>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </div>
+        </section><!-- End Frequently Asked Questioins Section -->
+
+    </main><!-- End #main -->
+
+
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <div class="footer-top">
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+                integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1"
+                crossorigin="anonymous">
+            <section class="footers bg-light pt-5 pb-3">
+                <div class="container pt-5" style=" margin-bottom: 3rem;">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-4 footers-one">
+                            <div class="footers-info mt-3">
+                                <p style="font-size: 3rem; margin:0rem, 5rem;">MediConnectSeva</p>
+                            </div>
+
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-2 footers-two">
+                            <img src="data:image/png;base64,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"
+                                alt="Logo" style="width:150px; margin-left: 23rem;">
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-2 footers-five">
+                            <img src="https://indianvisaonline.gov.in/images/emblem-img.png" alt="Logo"
+                                style="width:150px; margin-left:30rem;">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="container">
+                <div class="copyright">
+                    &copy; Copyright 2024 <strong><span>MediConnectSeva</span></strong>. All Rights Reserved
+                </div>
+                <div class="credits">
+                    Designed by <a href="#">MediConnectSeva Team</a>
+                </div>
+            </div>
+        </div>
+
+    </footer><!-- End Footer -->
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script>
+        function Logout() {
+            localStorage.removeItem("data");
+            console.log(localStorage.getItem("data"));
+        }
+    </script>
+    <script src="/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
+    <script src="/assets/vendor/purecounter/purecounter.js"></script>
+    <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="/assets/js/main.js"></script>
+
+</body>
+
+</html>

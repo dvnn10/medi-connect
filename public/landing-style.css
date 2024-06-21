@@ -1,0 +1,216 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  /* Light grey background */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  /* Adjusted margin */
+  color: #00bf8c;
+  /* Adjusted color */
+}
+
+.form-container {
+  width: 350px;
+  /* Adjusted width */
+  margin: 0 auto;
+  padding: 30px;
+  /* Adjusted padding */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  /* Rounded corners */
+  background-color: #fff;
+  /* White background */
+}
+
+.form-group {
+  margin-bottom: 20px;
+  /* Adjusted margin */
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  /* Adjusted margin */
+  color: #333;
+  /* Adjusted color */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  /* Adjusted padding */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.submit-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  /* Adjusted padding */
+  background-color: #472dbb;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #6a4eaf;
+  /* Darker hover color */
+}
+
+p {
+  margin-top: 20px;
+  /* Adjusted margin */
+  color: #555;
+  /* Adjusted color */
+}
+
+/* Custom styles for the header-text */
+.header-text h2 {
+  font-size: 2.8rem;
+  /* Adjusted font size */
+  font-weight: bold;
+  margin-bottom: 15px;
+  /* Adjusted margin */
+  color: #472dbb;
+  /* Adjusted color */
+}
+
+.header-text p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #555;
+  /* Adjusted color */
+}
+
+/* Animation effect */
+.header-text,
+.right-box {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s forwards ease-out;
+}
+
+/* Background color and texture for the left-box */
+#branding-box {
+  background: linear-gradient(to right bottom, #021820, #0860c4);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Additional Styles for the Homepage */
+.home-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.home-content h1 {
+  font-size: 3rem;
+  color: #333;
+}
+
+.home-content p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.btn-primary {
+  background-color: #00bf8c;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 20px;
+}
+
+.btn-primary:hover {
+  background-color: #747d8d;
+}
+
+/* Features Section */
+.features-section {
+  background-color: #dcdcdc;
+  padding: 2rem 0;
+  text-align: center;
+  border-radius: 1rem;
+  margin-bottom: 10px;
+}
+
+.feature-icon {
+  font-size: 2rem;
+  color: #472dbb;
+  margin-bottom: 20px;
+}
+
+/* How It Works Section */
+.how-it-works-section {
+  background-color: #dcdcdc;
+  padding: 2rem 0;
+  border-radius: 1rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.step {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Testimonial Section */
+.testimonial-section {
+  background-color: #dcdcdc;
+  padding: 2rem 0;
+  text-align: center;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+}
+
+.testimonial-text {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.testimonial-author {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.btn-primary1 {
+  background-color: #472dbb;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 20px;
+}

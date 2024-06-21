@@ -1,0 +1,255 @@
+<%- include('partials/header') %>
+  <!-- ======= Top Bar ======= -->
+  <div id="topbar" class="d-flex align-items-center fixed-top">
+    <div class="container d-flex align-items-center justify-content-center justify-content-md-between">
+      <div class="align-items-center d-none d-md-flex">
+        <i class="bi bi-clock"></i> MediConnectSeva
+      </div>
+      <div class="d-flex align-items-center">
+        Helpline Number : +91-11-23978046 | Toll Free Number: 1075
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <!-- ======= Header ======= -->
+  <div class="container">
+    <div class="row">
+      <div class="section-title" id="covid">
+        <h2 class="text-center">APPOINTMENT FORM</h2>
+      </div>
+    </div>
+    <!-- <div class="row">
+      <label for="select-hospital" class="col-form-label">Please Select the Hospital</label>
+      <select class="form-control control" id="hospital" name="hospital" required>
+        <option selected>KEM Hospital</option>
+        <option>Ambani Hospital</option>
+        <option>Fortris Hospital</option>
+        <option>Government Hospital</option>
+      </select>
+    </div> -->
+
+    <div class="row">
+      <label for="select-hospital" class="col-form-label">Please Select the Hospital</label>
+      <select class="form-control control" id="hospital" name="hospital" required>
+        <!-- Placeholder option -->
+        <option selected>Loading hospitals...</option>
+      </select>
+    </div>
+    
+
+<!-- Add the new dropdown for selecting doctors -->
+    <div class="row">
+      <label for="select-doctor" class="col-form-label">Select Doctor</label>
+      <select class="form-control control" id="doctor" name="doctor" required>
+        <!-- Placeholder option -->
+        <option selected>Loading doctors...</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="container-calendar">
+        <h3 id="monthAndYear"></h3>
+
+        <div class="button-container-calendar">
+          <button id="previous" onclick="previous()">&#8249;</button>
+          <button id="next" onclick="next()">&#8250;</button>
+        </div>
+
+        <table class="table-calendar" id="calendar" data-lang="en">
+          <thead id="thead-month"></thead>
+          <tbody id="calendar-body"></tbody>
+        </table>
+
+        <div class="footer-container-calendar">
+          <select id="month" onchange="jump()">
+            <option value=0>Jan</option>
+            <option value=1>Feb</option>
+            <option value=2>Mar</option>
+            <option value=3>Apr</option>
+            <option value=4>May</option>
+            <option value=5>Jun</option>
+            <option value=6>Jul</option>
+            <option value=7>Aug</option>
+            <option value=8>Sep</option>
+            <option value=9>Oct</option>
+            <option value=10>Nov</option>
+            <option value=11>Dec</option>
+          </select>
+          <select id="year" onchange="jump()"></select>
+        </div>
+      </div>
+    </div>
+    <!-- selcts slots -->
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-5">
+        <div class="login-card">
+          <div class="card-body py-md-4">
+            <h3 class="text-center">Select Your Slot</h3><br>
+            <table class="table table-bordered table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Timing</th>
+                  <!-- <th scope="col">Slots available</th> -->
+                  <th scope="col">Select your slot</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>10:00AM - 10:15 AM</td>
+                  <!-- <td>4</td> -->
+                  <td><input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                      value="10:00AM - 10:15 AM"></td>
+                </tr>
+                <tr>
+                  <tr>
+                    <td>10:15AM - 10:30AM</td>
+                    <!-- <td>4</td> -->
+                    <td><input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                        value="10:15AM - 10:30AM"></td>
+                  </tr>
+                  <td>10:30AM - 10:45AM</td>
+                  <!-- <td>3</td> -->
+                  <td><input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                      value="10:30AM - 10:45AM"></td>
+                </tr>
+                <tr>
+                  <td>10:45AM - 11:00AM</td>
+                  <!-- <td>2</td> -->
+                  <td><input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                      value="10:45AM - 11:00AM"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-10" id ="homebutton">
+        <a href="/dash" class="btn appointment-btn scrollto">Home</a>
+      </div>
+      <div class="col-2" id="bookNow">
+        <input id="bookNow" type="submit" class="btn appointment-btn scrollto" value="Book Now" onclick="SubmitDetails()" />
+      </div>
+    </div>
+    <br>
+  </div>
+  </div>
+
+
+  <script>
+    // Get the hospital dropdown and populate it
+const hospitalDropdown = document.getElementById("hospital");
+const doctorDropdown = document.getElementById("doctor");
+
+fetchHospitals();
+
+// Function to fetch hospitals and populate the dropdown
+async function fetchHospitals() {
+  try {
+    const response = await fetch("/admin/getHospitals");
+    const hospitals = await response.json();
+    // Clear existing options
+    hospitalDropdown.innerHTML = "";
+    // Populate dropdown with fetched hospitals
+    hospitals.forEach((hospital) => {
+      const option = document.createElement("option");
+      option.value = hospital.name;
+      option.textContent = hospital.name;
+      hospitalDropdown.appendChild(option);
+    });
+      // After populating hospitals, fetch doctors for the default hospital
+      fetchDoctors();
+  } catch (error) {
+    console.error("Error fetching hospitals:", error);
+    // Display error message in the dropdown
+    hospitalDropdown.innerHTML = "<option>Error fetching hospitals</option>";
+  }
+}
+
+ // Function to fetch doctors based on the selected hospital
+ async function fetchDoctors() {
+  const selectedHospital = hospitalDropdown.value;
+  try {
+    const response = await fetch(`/admin/getDoc-hosp?hospital=${selectedHospital}`);
+    const doctors = await response.json();
+    // Clear existing options
+    doctorDropdown.innerHTML = "";
+    // Populate dropdown with fetched doctors
+    doctors.forEach((doctor) => {
+      const option = document.createElement("option");
+      option.value = doctor.name;
+      option.textContent = "Dr."+doctor.name+" -- "+doctor.speciality+" Specialist";
+      doctorDropdown.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+    // Display error message in the dropdown
+    doctorDropdown.innerHTML = "<option>Error fetching doctors</option>";
+  }
+}
+
+// Event listener for hospital selection change
+hospitalDropdown.addEventListener("change", fetchDoctors);
+
+    function SubmitDetails() {
+      // do validation if any of the fields are left blank
+      const hospital = document.getElementById('hospital').value;
+      const doctor = document.getElementById('doctor').value;
+      const datePickers = document.querySelectorAll('td.date-picker.selected');
+      //    var date = datePickers[0];
+      //<td class="date-picker selected" data-date="29" data-month="2" data-year="2024" data-month_name="February">
+      const date = new Date(parseInt(datePickers[0].getAttribute('data-year')), parseInt(datePickers[0].getAttribute('data-month')) - 1, parseInt(datePickers[0].getAttribute('data-date')));
+      date.setHours(date.getHours() + 5);
+      date.setMinutes(date.getMinutes() + 30);
+      const slot = document.querySelector('input[name="exampleRadios"]:checked').value;
+      let data = JSON.parse(localStorage.getItem('data'))
+      // POST request as json body to backend
+      fetch('/appointment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: data.username,
+          hospital: hospital,
+          doctor: doctor,
+          date: date,
+          slot: slot
+        })
+      }).then(response => {
+        if (!response.ok) {
+          throw new Error('Appointment already booked');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        alert('Appointment Booked Successfully');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error booking appointment: ' + error.message);
+      });
+
+    }
+  </script>
+
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/purecounter/purecounter.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/calender.js"></script>
+
+  </body>
+
+  </html>
