@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
-const mongodbUri = "mongodb+srv://leena:mffobh@cluster0.tpctwfa.mongodb.net/";
+require('dotenv').config();
+
+const mongodbUri = process.env.MONGODB_URI;
+
+// const mongodbUri = "mongodb+srv://leena:mffobh@cluster0.tpctwfa.mongodb.net/";
 
 mongoose
   .connect(mongodbUri, {

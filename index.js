@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const app = express();
 
+
 app.use(express.static(__dirname + "/public"));
 app.use(express.static("public"));
 app.use(bodyParser.json());
@@ -69,8 +70,12 @@ app.use("/admin", adminRouter);
 const userRouter = require("./Routes/userRouter");
 app.use("/user", userRouter);
 
-app.listen(5000, function () {
-  console.log("Server started on port 5000");
+
+const PORT = 5000;
+
+app.listen(PORT, function () {
+  console.log(`Server started on port ${PORT}`);
+  console.log(`Open your browser and click here: \x1b]8;;http://localhost:${PORT}\x1b\\localhost:${PORT}\x1b]8;;\x1b\\`);
 });
 
 // "C:\Program Files\MongoDB\Server\4.4\bin\mongod.exe" --dbpath="c:\data\db"
