@@ -16,7 +16,7 @@ In this guide, we'll walk you through the process of setting up MongoDB for your
 
      Example:
      ```dotenv
-     MONGODB_URI=mongodb+srv://leena:mffobh@cluster0.tpctwfa.mongodb.net/mediconnect?retryWrites=true&w=majority
+     MONGODB_URI=mongodb+srv://Arshit:xyz@cluster0.xyzabc.mongodb.net/mediconnect?retryWrites=true&w=majority
      ```
 
 ## Installing Dependencies
