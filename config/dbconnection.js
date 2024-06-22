@@ -4,8 +4,6 @@ require('dotenv').config();
 
 const mongodbUri = process.env.MONGODB_URI;
 
-// const mongodbUri = "mongodb+srv://leena:mffobh@cluster0.tpctwfa.mongodb.net/";
-
 mongoose
   .connect(mongodbUri, {
     dbName: "userDB",
